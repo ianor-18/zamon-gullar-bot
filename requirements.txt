@@ -3,5 +3,5 @@ uvicorn==0.24.0
 python-telegram-bot==20.3
 pymongo==4.6.0
 python-dotenv==1.0.0
-httpx==0.25.1
+httpx==0.24.1
 google-generativeai==0.7.2
