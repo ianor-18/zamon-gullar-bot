@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zamon Gullar - Admin Panel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .card h2 {
+            color: #764ba2;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: inherit;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+        }
+        .products-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .product-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        .product-card:hover {
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .product-info {
+            padding: 15px;
+        }
+        .product-info h3 {
+            color: #333;
+            margin-bottom: 8px;
+        }
+        .product-info p {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        .price {
+            font-size: 1.3em;
+            color: #764ba2;
+            font-weight: bold;
+        }
+        .delete-btn {
+            background: #e74c3c;
+            padding: 6px 12px;
+            font-size: 0.8em;
+            margin-top: 10px;
+        }
+        .success {
+            background: #27ae60;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌸 Zamon Gullar</h1>
+            <p>Admin Panel - Mahsulotlarni boshqarish</p>
+        </div>
+
+        <div class="grid">
+            <!-- GUL QO'SHISH -->
+            <div class="card">
+                <h2>➕ Yangi Gul Qo'shish</h2>
+                <div class="success" id="success">✅ Gul muvaffaqiyatli qo'shildi!</div>
+                
+                <form id="productForm">
+                    <div class="form-group">
+                        <label>Gul Nomi *</label>
+                        <input type="text" id="name" placeholder="Masalan: Qizil rozalar" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Kategoriya *</label>
+                        <select id="category" required>
+                            <option value="">Tanlang...</option>
+                            <option value="kesimli_gullar">Kesimli Gullar</option>
+                            <option value="topiya">Topiya (O'simlik)</option>
+                            <option value="buketlar">Buketlar</option>
+                            <option value="dorilar">Dorilar</option>
+                            <option value="qumlar">Qumlar</option>
+                            <option value="parvarishlash">Parvarishlash Xizmati</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Narxi (so'm) *</label>
+                        <input type="number" id="price" placeholder="65000" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tavsifi *</label>
+                        <textarea id="description" placeholder="Masalan: Ajoyib qizil rozalar, 7 dona, 40-50 sm" rows="4" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Rasm URL *</label>
+                        <input type="url" id="image_url" placeholder="https://example.com/image.jpg" required>
+                    </div>
+
+                    <button type="submit">🌸 Qo'shish</button>
+                </form>
+            </div>
+
+            <!-- STATISTIKA -->
+            <div class="card">
+                <h2>📊 Bugun Statistikasi</h2>
+                <div style="margin-top: 30px;">
+                    <div style="margin-bottom: 20px;">
+                        <p style="color: #666; font-size: 0.9em;">Jami buyurtmalar:</p>
+                        <h3 id="totalOrders" style="font-size: 2.5em; color: #667eea;">0</h3>
+                    </div>
+                    <div style="margin-bottom: 20px;">
+                        <p style="color: #666; font-size: 0.9em;">Jami daromad:</p>
+                        <h3 id="totalRevenue" style="font-size: 2.5em; color: #27ae60;">0 so'm</h3>
+                    </div>
+                    <div>
+                        <p style="color: #666; font-size: 0.9em;">Yangi xaridor:</p>
+                        <h3 id="newCustomers" style="font-size: 2.5em; color: #e74c3c;">0</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MAHSULOTLAR LISTI -->
+        <div class="card">
+            <h2>📦 Mavjud Mahsulotlar</h2>
+            <div class="products-list" id="productsList">
+                <p style="text-align: center; color: #999;">Mahsulot topilmadi...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // BACKEND URL
+        const API_URL = "https://your-domain.com";
+
+        // GUL QO'SHISH
+        document.getElementById('productForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const data = {
+                name: document.getElementById('name').value,
+                category: document.getElementById('category').value,
+                price: parseInt(document.getElementById('price').value),
+                description: document.getElementById('description').value,
+                image_url: document.getElementById('image_url').value
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/api/add-product`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    document.getElementById('success').style.display = 'block';
+                    document.getElementById('productForm').reset();
+                    setTimeout(() => {
+                        document.getElementById('success').style.display = 'none';
+                    }, 3000);
+                    loadProducts();
+                }
+            } catch (error) {
+                alert('Xato: ' + error.message);
+            }
+        });
+
+        // MAHSULOTLARNI YUKLASH
+        async function loadProducts() {
+            try {
+                const response = await fetch(`${API_URL}/api/products`);
+                const products = await response.json();
+
+                const list = document.getElementById('productsList');
+                list.innerHTML = '';
+
+                products.forEach(product => {
+                    const card = document.createElement('div');
+                    card.className = 'product-card';
+                    card.innerHTML = `
+                        <img src="${product.image_url}" alt="${product.name}">
+                        <div class="product-info">
+                            <h3>${product.name}</h3>
+                            <p>${product.description.substring(0, 50)}...</p>
+                            <div class="price">${product.price.toLocaleString()} so'm</div>
+                            <button class="delete-btn" onclick="deleteProduct('${product._id}')">🗑️ O'chirish</button>
+                        </div>
+                    `;
+                    list.appendChild(card);
+                });
+            } catch (error) {
+                console.error('Xato:', error);
+            }
+        }
+
+        // O'CHIRISH
+        async function deleteProduct(id) {
+            if (confirm('Aniqmi o\'chirmoqchisiz?')) {
+                try {
+                    await fetch(`${API_URL}/api/product/${id}`, {
+                        method: 'DELETE'
+                    });
+                    loadProducts();
+                } catch (error) {
+                    alert('Xato: ' + error.message);
+                }
+            }
+        }
+
+        // STATISTIKA YUKLASH
+        async function loadStats() {
+            try {
+                const response = await fetch(`${API_URL}/api/stats`);
+                const stats = await response.json();
+
+                document.getElementById('totalOrders').textContent = stats.totalOrders;
+                document.getElementById('totalRevenue').textContent = stats.totalRevenue.toLocaleString() + ' so\'m';
+                document.getElementById('newCustomers').textContent = stats.newCustomers;
+            } catch (error) {
+                console.error('Xato:', error);
+            }
+        }
+
+        // PAGE LOAD
+        loadProducts();
+        loadStats();
+        setInterval(loadStats, 30000); // Har 30 sekundda yangilash
+    </script>
+</body>
+</html>
