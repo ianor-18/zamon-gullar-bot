@@ -7,7 +7,7 @@ from datetime import datetime
 import httpx
 from dotenv import load_dotenv
 import google.generativeai as genai
-
+import certifi
 load_dotenv()
 
 # ===== SETUP =====
@@ -22,7 +22,7 @@ CHANNEL_ID = int(os.getenv("CHANNEL_ID", "-100123456789"))
 genai.configure(api_key=GOOGLE_API_KEY)
 GEMINI_MODEL = "gemini-2.5-flash-lite"
 
-client = MongoClient(MONGO_URL)
+client = MongoClient(MONGO_URL, tlsCAFile=certifi.where()) 
 db = client["zamon_gullar"]
 products_collection = db["products"]
 orders_collection = db["orders"]
