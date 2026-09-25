@@ -20,7 +20,9 @@ CHANNEL_ID = int(os.getenv("CHANNEL_ID", "-100123456789"))
 
 # ===== GEMINI SETUP =====
 genai.configure(api_key=GOOGLE_API_KEY)
-GEMINI_MODEL = "gemini-2.5-flash-lite"
+GEMINI_MODEL = os.environ.get(
+    "GEMINI_MODEL", "gemini-3.5-flash-lite"
+).strip()
 
 client = MongoClient(MONGO_URL, tlsCAFile=certifi.where()) 
 db = client["zamon_gullar"]
